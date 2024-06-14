@@ -10,9 +10,8 @@ env:
 
 jobs:
   aws-kubectl:
-    name: AWS KUBECTL
+    name: AWS KUBECTL publish
     runs-on: ubuntu-latest
-    name: publish image
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
