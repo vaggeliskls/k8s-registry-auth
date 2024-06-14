@@ -7,6 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   TAG_NAME: ${{ github.ref_name }}
+  IMAGE_URL: docker.io/vaggeliskls/aws-kubectl
 
 jobs:
   aws-kubectl:
@@ -15,20 +16,6 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            docker.io/${{ github.repository }}
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -49,6 +36,9 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{env.IMAGE_URL}}:${{env.TAG_NAME}}
+            ${{env.IMAGE_URL}}:latest
           platforms: linux/amd64,linux/arm64
+          sbom: true
+          provenance: true
