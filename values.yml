@@ -1,0 +1,16 @@
+global:
+  # this is the repository that we try to authenticate upon
+  # Can be any aws ecr related repository or other docker based repositories
+  registry: 123456789123.dkr.ecr.eu-west-2.amazonaws.com
+  secretConfigName: global-secret
+  image:
+    registry: docker.io
+    repository: vaggeliskls/aws-kubectl
+    tag: latest
+
+# Dynamic selection of registry type
+docker:
+  enabled: false
+
+aws-ecr:
+  enabled: true

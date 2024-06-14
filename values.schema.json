@@ -1,0 +1,4 @@
+{
+    "$id": "https://github.com/vaggeliskls/k8s-registry-auth/values",
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
