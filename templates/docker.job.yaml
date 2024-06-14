@@ -1,3 +1,4 @@
+{{- if .Values.docker.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -11,19 +12,19 @@ spec:
   template:
     spec:
       terminationGracePeriodSeconds: 600
-      serviceAccountName: {{ .Release.Name }}-docker-service-account
+      serviceAccountName: {{ .Release.Name }}-service-account
       restartPolicy: Never
       containers:
         - name: kubectl
-          image: {{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
           command:
             - "/bin/sh"
             - "-c"
             - |
-              DOCKER_REGISTRY_SERVER={{ .Values.global.registry }}
-              kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.global.imagePullSecrets }} || true
+              DOCKER_REGISTRY_SERVER={{ .Values.registry }}
+              kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.imagePullSecrets }} || true
               kubectl create secret --namespace {{ .Release.Namespace }} \
-                docker-registry {{ .Values.global.imagePullSecrets }} \
+                docker-registry {{ .Values.imagePullSecrets }} \
                 --docker-server=$DOCKER_REGISTRY_SERVER \
                 --docker-username=$DOCKER_USERNAME \
                 --docker-password=$DOCKER_PASSWORD
@@ -31,10 +32,11 @@ spec:
             - name: DOCKER_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.secretConfigName }}
-                  key: {{ .Values.secretConfigUsernameKey }}
+                  name: {{ .Values.docker.secretConfigName }}
+                  key: {{ .Values.docker.secretConfigUsernameKey }}
             - name: DOCKER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.secretConfigName }}
-                  key: {{ .Values.secretConfigPasswordKey }}
+                  name: {{ .Values.docker.secretConfigName }}
+                  key: {{ .Values.docker.secretConfigPasswordKey }}
+{{- end }}
