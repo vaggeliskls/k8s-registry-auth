@@ -1,6 +1,6 @@
 apiVersion: v2
 name: docker registry authentication
-description: A Helm chart for Kubernetes to deploy credentials
+description: A sub chart that authenticates docker related registry
 
 # A chart can be either an 'application' or a 'library' chart.
 #

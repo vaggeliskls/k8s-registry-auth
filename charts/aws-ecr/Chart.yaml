@@ -1,6 +1,6 @@
 apiVersion: v2
 name: aws ect registry authentication
-description: A Helm chart for Kubernetes to deploy aws ecr credentials
+description: A sub chart that authenticates aws ecr registry
 
 # A chart can be either an 'application' or a 'library' chart.
 #

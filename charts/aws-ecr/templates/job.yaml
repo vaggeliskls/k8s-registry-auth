@@ -1,7 +1,7 @@
 container-shared: &container-shared
   containers:
     - name: kubectl
-      image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+      image: {{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag }}
       command:
         - "/bin/sh"
         - "-c"
@@ -22,12 +22,12 @@ container-shared: &container-shared
           valueFrom:
             secretKeyRef:
               name: {{ .Values.global.secretConfigName }}
-              key: REGISTRY_USERNAME
+              key: {{ .Values.secretConfigUsernameKey }}
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
               name: {{ .Values.global.secretConfigName }}
-              key: REGISTRY_PASSWORD
+              key: {{ .Values.secretConfigPasswordKey }}
 
 
 apiVersion: batch/v1
@@ -53,7 +53,7 @@ metadata:
   name: aws-ecr-cron-credentials-job
   namespace: {{ .Release.Namespace }}
 spec:
-  schedule: "0 */8 * * *"
+  schedule: {{ .Values.schedule }}
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:

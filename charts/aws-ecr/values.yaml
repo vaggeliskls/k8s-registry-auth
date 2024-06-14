@@ -1,4 +1,0 @@
-image:
-  registry: docker.io
-  repository: xynova/aws-kubectl
-  tag: latest
