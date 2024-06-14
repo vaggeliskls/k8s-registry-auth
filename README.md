@@ -1,1 +1,1 @@
-# k8s-registry-auth
+# Kubernetes Registry Authentication
