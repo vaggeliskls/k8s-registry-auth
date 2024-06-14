@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Namespace }}-docker-credentials-job
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      terminationGracePeriodSeconds: 600
+      serviceAccountName: {{ .Release.Name }}-docker-service-account
+      restartPolicy: Never
+      containers:
+        - name: kubectl
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              DOCKER_REGISTRY_SERVER={{ .Values.global.registry }}
+              kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.global.imagePullSecrets }} || true
+              kubectl create secret --namespace {{ .Release.Namespace }} \
+                docker-registry {{ .Values.global.imagePullSecrets }} \
+                --docker-server=$DOCKER_REGISTRY_SERVER \
+                --docker-username=$DOCKER_USERNAME \
+                --docker-password=$DOCKER_PASSWORD
+          env:
+            - name: DOCKER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.secretConfigName }}
+                  key: REGISTRY_USERNAME
+            - name: DOCKER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.secretConfigName }}
+                  key: REGISTRY_PASSWORD
