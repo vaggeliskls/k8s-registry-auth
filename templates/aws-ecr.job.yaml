@@ -25,7 +25,7 @@ spec:
               AWS_ACCOUNT=$(echo $DOCKER_REGISTRY | cut -d"." -f1,1)
               AWS_REGION=$(echo $DOCKER_REGISTRY | cut -d"." -f4,4)
               AWS_DOCKER_USER=AWS
-              AWS_DOCKER_PASSWORD=$(aws ecr get-login --region $AWS_REGION --registry-ids $AWS_ACCOUNT | cut -d' ' -f6)
+              AWS_DOCKER_PASSWORD=$(aws ecr get-login-password --region $AWS_REGION)
               kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.imagePullSecrets }} || true
               kubectl create secret --namespace {{ .Release.Namespace }} \
                   docker-registry {{ .Values.imagePullSecrets }} \
@@ -79,7 +79,7 @@ spec:
                   AWS_ACCOUNT=$(echo $DOCKER_REGISTRY | cut -d"." -f1,1)
                   AWS_REGION=$(echo $DOCKER_REGISTRY | cut -d"." -f4,4)
                   AWS_DOCKER_USER=AWS
-                  AWS_DOCKER_PASSWORD=$(aws ecr get-login --region $AWS_REGION --registry-ids $AWS_ACCOUNT | cut -d' ' -f6)
+                  AWS_DOCKER_PASSWORD=$(aws ecr get-login-password --region $AWS_REGION)
                   kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.imagePullSecrets }} || true
                   kubectl create secret --namespace {{ .Release.Namespace }} \
                       docker-registry {{ .Values.imagePullSecrets }} \
