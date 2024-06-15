@@ -1,10 +1,10 @@
-# Kubernetes Registry Authentication
+# ☁️ Kubernetes Registry Authentication
 This Kubernetes Helm chart is designed to simplify and streamline the process of authenticating with private image repositories for application deployment. This chart is mainly essential when working with Kubernetes, which requires specific authentication procedures to pull private images.
 
 ⭐ Don't forget to star the project if it helped you!
 
 
-# Supported Registries
+# 🗄️ Supported Registries
 Primarily, this project focuses on tackling the authentication process associated with AWS ECR registries and other Docker-related registries. The supported registries that also have tested are:
 
 1. [Amazon ECR](https://aws.amazon.com/ecr/)
