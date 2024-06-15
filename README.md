@@ -11,7 +11,7 @@ Primarily, this project focuses on tackling the authentication process associate
 > AWS ECR registries specifically require re-authentication every 12 hours. Hence, we also include a cronjob in our solution that refreshes this login, ensuring you're always authenticated to your registry.
 
 # Usage
-This Helm chart is an OCI-compatible repository located at oci://docker.io/vaggeliskls/k8s-registry-auth. The only required field for this chart is the registry field, which indicates the target registry that you want to authenticate with.
+This Helm chart is an OCI-compatible repository located at oci://registry-1.docker.io/vaggeliskls/k8s-registry-auth. The only required field for this chart is the registry field, which indicates the target registry that you want to authenticate with.
 
 There are two ways to set the credentials for the registry:
 
@@ -23,26 +23,26 @@ For using this Helm chart with AWS ECR, use the following command:
 
 ### With existing secret
 ```
-helm upgrade --install k8s-registry-auth oci://docker.io/vaggeliskls/k8s-registry-auth  --set registry=123456789123.dkr.ecr.region.amazonaws.com --set awsEcr.enabled=true --set secretConfigName=secret-name
+helm upgrade --install k8s-registry-auth oci://registry-1.docker.io/vaggeliskls/k8s-registry-auth  --set registry=123456789123.dkr.ecr.region.amazonaws.com --set awsEcr.enabled=true --set secretConfigName=secret-name
 ```
 ### With static credentials
 ```
-helm upgrade --install k8s-registry-auth oci://docker.io/vaggeliskls/k8s-registry-auth  --set registry=123456789123.dkr.ecr.region.amazonaws.com --set awsEcr.enabled=true --set registryUsername=username --set registryPassword=password
+helm upgrade --install k8s-registry-auth oci://registry-1.docker.io/vaggeliskls/k8s-registry-auth  --set registry=123456789123.dkr.ecr.region.amazonaws.com --set awsEcr.enabled=true --set registryUsername=username --set registryPassword=password
 ```
 
 Please replace 123456789123.dkr.ecr.region.amazonaws.com with your own AWS ECR registry URL.
-You can also use spesific version of this oci repository by adding: `--version 0.5.0`
+You can also use spesific version of this oci repository by adding: `--version 1.0.0`
 
 
 ## Docker Based
 For using this Helm chart with generic Docker registries, use the following command:
 ### With existing secret
 ```
-helm upgrade --install k8s-registry-auth oci://docker.io/vaggeliskls/k8s-registry-auth  --set registry=yourdomain.com --set docker.enabled=true --set secretConfigName=secret-name
+helm upgrade --install k8s-registry-auth oci://registry-1.docker.io/vaggeliskls/k8s-registry-auth  --set registry=yourdomain.com --set docker.enabled=true --set secretConfigName=secret-name
 ```
 ### With static credentials
 ```
-helm upgrade --install k8s-registry-auth oci://docker.io/vaggeliskls/k8s-registry-auth  --set registry=yourdomain.com --set docker.enabled=true --set registryUsername=username --set registryPassword=password
+helm upgrade --install k8s-registry-auth oci://registry-1.docker.io/vaggeliskls/k8s-registry-auth  --set registry=yourdomain.com --set docker.enabled=true --set registryUsername=username --set registryPassword=password
 ```
 
 # Debug Helm Template
