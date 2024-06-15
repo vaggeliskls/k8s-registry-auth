@@ -9,7 +9,7 @@ Primarily, this project focuses on tackling the authentication process associate
 
 1. [Amazon ECR](https://aws.amazon.com/ecr/)
 2. [JFrog Artifactory](https://jfrog.com/artifactory/)
-3. [Nexus](https://help.sonatype.com/en/docker-registry.html) ()
+3. [Nexus](https://help.sonatype.com/en/docker-registry.html)
 4. [Docker Hub](https://hub.docker.com/)
 5. [Harbor](https://goharbor.io/) (Not tested)
 6. [IBM Cloud Container Registry](https://www.ibm.com/products/container-registry) (Not tested)
