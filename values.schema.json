@@ -1,4 +1,167 @@
 {
-    "$id": "https://github.com/vaggeliskls/k8s-registry-auth/values",
-    "$schema": "https://json-schema.org/draft/2020-12/schema"
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "registry": {
+            "description": "Registry URL.",
+            "type": "string"
+        },
+        "secretConfigName": {
+            "description": "Existing secret holding registry credentials.",
+            "type": "string"
+        },
+        "registryUsername": {
+            "description": "Username for registry authentication.",
+            "type": "string"
+        },
+        "registryPassword": {
+            "description": "Password for registry authentication.",
+            "type": "string"
+        },
+        "imagePullSecrets": {
+            "description": "Kubernetes image pull secrets.",
+            "type": "string"
+        },
+        "awsEcr": {
+            "description": "AWS ECR settings.",
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "description": "AWS ECR authentication enabled.",
+                    "type": "boolean"
+                },
+                "schedule": {
+                    "description": "Scheduler for AWS ECR authentication.",
+                    "type": "string",
+                    "pattern": "^[\\d]{1,2}\\s[^\\s]*\\s[^\\s]*\\s[^\\s]*\\s[^\\s]*$"
+                },
+                "secretConfigUsernameKey": {
+                    "description": "Key representing the username in AWS ECR.",
+                    "type": "string"
+                },
+                "secretConfigPasswordKey": {
+                    "description": "Key representing the password in AWS ECR.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "enabled",
+                "schedule",
+                "secretConfigUsernameKey",
+                "secretConfigPasswordKey"
+            ]
+        },
+        "docker": {
+            "description": "Docker settings.",
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "description": "Docker authentication enabled.",
+                    "type": "boolean"
+                },
+                "secretConfigUsernameKey": {
+                    "description": "Key representing the username in Docker.",
+                    "type": "string"
+                },
+                "secretConfigPasswordKey": {
+                    "description": "Key representing the password in Docker.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "enabled",
+                "secretConfigUsernameKey",
+                "secretConfigPasswordKey"
+            ]
+        },
+        "image": {
+            "description": "Image settings.",
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "description": "Container image registry URL.",
+                    "type": "string"
+                },
+                "repository": {
+                    "description": "Container image repository name.",
+                    "type": "string"
+                },
+                "tag": {
+                    "description": "Container image tag.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "registry",
+                "repository",
+                "tag"
+            ]
+        }
+    },
+    "required": [
+        "registry",
+        "imagePullSecrets",
+        "awsEcr",
+        "docker",
+        "image"
+    ],
+    "oneOf": [
+        {
+            "properties": {
+                "docker": {
+                    "properties": {
+                        "enabled": {
+                            "enum": [
+                                true
+                            ]
+                        }
+                    }
+                },
+                "awsEcr": {
+                    "properties": {
+                        "enabled": {
+                            "enum": [
+                                false
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "properties": {
+                "docker": {
+                    "properties": {
+                        "enabled": {
+                            "enum": [
+                                false
+                            ]
+                        }
+                    }
+                },
+                "awsEcr": {
+                    "properties": {
+                        "enabled": {
+                            "enum": [
+                                true
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "anyOf": [
+        {
+            "required": [
+                "secretConfigName"
+            ]
+        },
+        {
+            "required": [
+                "registryUsername",
+                "registryPassword"
+            ]
+        }
+    ]
 }
