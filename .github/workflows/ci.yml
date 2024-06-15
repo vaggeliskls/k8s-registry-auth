@@ -56,7 +56,7 @@ jobs:
         env:
           OCI_IMAGE_NAME: k8s-registry-auth
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io/${{ github.actor }} -u ${{ github.actor }} --password-stdin
           helm package ./
           helm push ${OCI_IMAGE_NAME}-${{env.TAG_NAME}}.tgz oci://ghcr.io/${{ github.actor }}
         shell: bash
