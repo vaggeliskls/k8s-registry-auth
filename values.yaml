@@ -1,11 +1,15 @@
 # this is the repository that we try to authenticate upon
 # Can be any aws ecr related repository or other docker based repositories
 # ex. 123456789123.dkr.ecr.eu-west-2.amazonaws.com
-registry: ""
+# This field is required
+# registry: ""
 # Provide an existing secret that hold registry credentials
-secretConfigName: global-secret
-registryUsername: ""
-registryPassword: ""
+# ex. secretConfigName: global-secret
+# secretConfigName: ""
+# -- OR --
+# Provide static credentials
+# registryUsername: ""
+# registryPassword: ""
 # Name of k8s image pull secrets
 # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret
 imagePullSecrets: "registry-auth-credentials"

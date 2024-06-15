@@ -30,13 +30,21 @@ spec:
                 --docker-password=$DOCKER_PASSWORD
           env:
             - name: DOCKER_USERNAME
+              {{- if .Values.secretConfigName }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.docker.secretConfigName }}
+                  name: {{ .Values.secretConfigName }}
                   key: {{ .Values.docker.secretConfigUsernameKey }}
+              {{- else }}
+              value: {{ .Values.registryUsername }}
+              {{- end }}
             - name: DOCKER_PASSWORD
+              {{- if .Values.secretConfigName }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.docker.secretConfigName }}
+                  name: {{ .Values.secretConfigName }}
                   key: {{ .Values.docker.secretConfigPasswordKey }}
+              {{- else }}
+              value: {{ .Values.registryPassword }}
+              {{- end }}
 {{- end }}

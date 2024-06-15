@@ -34,15 +34,23 @@ spec:
                   --docker-password=$AWS_DOCKER_PASSWORD
           env:
             - name: AWS_ACCESS_KEY_ID
+              {{- if .Values.secretConfigName }}
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.awsEcr.secretConfigName }}
                   key: {{ .Values.awsEcr.secretConfigUsernameKey }}
+              {{- else }}
+              value: {{ .Values.registryUsername }}
+              {{- end }}
             - name: AWS_SECRET_ACCESS_KEY
+              {{- if .Values.secretConfigName }}
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.awsEcr.secretConfigName }}
                   key: {{ .Values.awsEcr.secretConfigPasswordKey }}
+              {{- else }}
+              value: {{ .Values.registryPassword }}
+              {{- end }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -80,13 +88,21 @@ spec:
                       --docker-password=$AWS_DOCKER_PASSWORD
               env:
                 - name: AWS_ACCESS_KEY_ID
+                  {{- if .Values.secretConfigName }}
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.awsEcr.secretConfigName }}
                       key: {{ .Values.awsEcr.secretConfigUsernameKey }}
+                  {{- else }}
+                  value: {{ .Values.registryUsername }}
+                  {{- end }}
                 - name: AWS_SECRET_ACCESS_KEY
+                  {{- if .Values.secretConfigName }}
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.awsEcr.secretConfigName }}
                       key: {{ .Values.awsEcr.secretConfigPasswordKey }}
+                  {{- else }}
+                  value: {{ .Values.registryPassword }}
+                  {{- end }}
 {{- end }}
