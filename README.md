@@ -34,6 +34,7 @@ There are two ways to set the credentials for the registry:
 2. [AWS ECR Example (Existing Secret)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#aws-ecr-example-existing-secret)
 3. [Docker Example (Existing Secret)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#docker-example-existing-secret)
 4. [Docker Example (Static Credentials)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#docker-example-static-credentials)
+5. [Use local values.yaml](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#use-local-valuesyaml)
 
 ## AWS ECR
 For using this Helm chart with AWS ECR, use the following command:
