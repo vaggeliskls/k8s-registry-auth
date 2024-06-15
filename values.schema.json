@@ -22,6 +22,14 @@
             "description": "Kubernetes image pull secrets.",
             "type": "string"
         },
+        "secretConfigUsernameKey": {
+            "description": "Key representing the username in AWS ECR.",
+            "type": "string"
+        },
+        "secretConfigPasswordKey": {
+            "description": "Key representing the password in AWS ECR.",
+            "type": "string"
+        },
         "awsEcr": {
             "description": "AWS ECR settings.",
             "type": "object",
@@ -34,21 +42,11 @@
                     "description": "Scheduler for AWS ECR authentication.",
                     "type": "string",
                     "pattern": "^[\\d]{1,2}\\s[^\\s]*\\s[^\\s]*\\s[^\\s]*\\s[^\\s]*$"
-                },
-                "secretConfigUsernameKey": {
-                    "description": "Key representing the username in AWS ECR.",
-                    "type": "string"
-                },
-                "secretConfigPasswordKey": {
-                    "description": "Key representing the password in AWS ECR.",
-                    "type": "string"
                 }
             },
             "required": [
                 "enabled",
-                "schedule",
-                "secretConfigUsernameKey",
-                "secretConfigPasswordKey"
+                "schedule"
             ]
         },
         "docker": {
@@ -58,20 +56,10 @@
                 "enabled": {
                     "description": "Docker authentication enabled.",
                     "type": "boolean"
-                },
-                "secretConfigUsernameKey": {
-                    "description": "Key representing the username in Docker.",
-                    "type": "string"
-                },
-                "secretConfigPasswordKey": {
-                    "description": "Key representing the password in Docker.",
-                    "type": "string"
                 }
             },
             "required": [
-                "enabled",
-                "secretConfigUsernameKey",
-                "secretConfigPasswordKey"
+                "enabled"
             ]
         },
         "image": {
@@ -103,7 +91,9 @@
         "imagePullSecrets",
         "awsEcr",
         "docker",
-        "image"
+        "image",
+        "secretConfigUsernameKey",
+        "secretConfigPasswordKey"
     ],
     "oneOf": [
         {

@@ -91,8 +91,8 @@ spec:
                   {{- if .Values.secretConfigName }}
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.awsEcr.secretConfigName }}
-                      key: {{ .Values.awsEcr.secretConfigUsernameKey }}
+                      name: {{ .Values.secretConfigName }}
+                      key: {{ .Values.secretConfigUsernameKey }}
                   {{- else }}
                   value: {{ .Values.registryUsername }}
                   {{- end }}
@@ -100,8 +100,8 @@ spec:
                   {{- if .Values.secretConfigName }}
                   valueFrom:
                     secretKeyRef:
-                      name: {{ .Values.awsEcr.secretConfigName }}
-                      key: {{ .Values.awsEcr.secretConfigPasswordKey }}
+                      name: {{ .Values.secretConfigName }}
+                      key: {{ .Values.secretConfigPasswordKey }}
                   {{- else }}
                   value: {{ .Values.registryPassword }}
                   {{- end }}

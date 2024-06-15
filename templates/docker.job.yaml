@@ -34,7 +34,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretConfigName }}
-                  key: {{ .Values.docker.secretConfigUsernameKey }}
+                  key: {{ .Values.secretConfigUsernameKey }}
               {{- else }}
               value: {{ .Values.registryUsername }}
               {{- end }}
@@ -43,7 +43,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretConfigName }}
-                  key: {{ .Values.docker.secretConfigPasswordKey }}
+                  key: {{ .Values.secretConfigPasswordKey }}
               {{- else }}
               value: {{ .Values.registryPassword }}
               {{- end }}
