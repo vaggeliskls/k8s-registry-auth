@@ -45,6 +45,8 @@ jobs:
   oci-publish:
     name: OCI Publish
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
