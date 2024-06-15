@@ -1,0 +1,31 @@
+# this is the repository that we try to authenticate upon
+# Can be any aws ecr related repository or other docker based repositories
+# ex. 123456789123.dkr.ecr.eu-west-2.amazonaws.com
+# This field is required
+# registry: ""
+# Provide an existing secret that hold registry credentials
+# ex. secretConfigName: global-secret
+# secretConfigName: ""
+# The key of existing secret to find the properties
+secretConfigUsernameKey: REGISTRY_USERNAME
+secretConfigPasswordKey: REGISTRY_PASSWORD
+# -- OR --
+# Provide static credentials
+# registryUsername: ""
+# registryPassword: ""
+# Name of k8s image pull secrets
+# https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret
+imagePullSecrets: "registry-auth-credentials"
+# Dynamic selection of registry type
+awsEcr:
+  enabled: true
+  schedule: "0 */8 * * *" # every 8 hours
+
+docker:
+  enabled: false
+
+# This image is used to create or update the secret registry secret
+image:
+  registry: docker.io
+  repository: vaggeliskls/aws-kubectl
+  tag: latest

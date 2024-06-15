@@ -1,0 +1,108 @@
+{{- if .Values.awsEcr.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: aws-ecr-credentials-job
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      terminationGracePeriodSeconds: 600
+      serviceAccountName: {{ .Release.Name }}-service-account
+      restartPolicy: OnFailure
+      containers:
+        - name: kubectl
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              DOCKER_REGISTRY={{ .Values.registry }}
+              AWS_ACCOUNT=$(echo $DOCKER_REGISTRY | cut -d"." -f1,1)
+              AWS_REGION=$(echo $DOCKER_REGISTRY | cut -d"." -f4,4)
+              AWS_DOCKER_USER=AWS
+              AWS_DOCKER_PASSWORD=$(aws ecr get-login --region $AWS_REGION --registry-ids $AWS_ACCOUNT | cut -d' ' -f6)
+              kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.imagePullSecrets }} || true
+              kubectl create secret --namespace {{ .Release.Namespace }} \
+                  docker-registry {{ .Values.imagePullSecrets }} \
+                  --docker-server=$DOCKER_REGISTRY \
+                  --docker-username=$AWS_DOCKER_USER \
+                  --docker-password=$AWS_DOCKER_PASSWORD
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              {{- if .Values.secretConfigName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.awsEcr.secretConfigName }}
+                  key: {{ .Values.awsEcr.secretConfigUsernameKey }}
+              {{- else }}
+              value: {{ .Values.registryUsername }}
+              {{- end }}
+            - name: AWS_SECRET_ACCESS_KEY
+              {{- if .Values.secretConfigName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.awsEcr.secretConfigName }}
+                  key: {{ .Values.awsEcr.secretConfigPasswordKey }}
+              {{- else }}
+              value: {{ .Values.registryPassword }}
+              {{- end }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aws-ecr-cron-credentials-job
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: {{ .Values.awsEcr.schedule }}
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          terminationGracePeriodSeconds: 600
+          serviceAccountName: {{ .Release.Name }}-service-account
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+              command:
+                - "/bin/sh"
+                - "-c"
+                - |
+                  DOCKER_REGISTRY={{ .Values.registry }}
+                  AWS_ACCOUNT=$(echo $DOCKER_REGISTRY | cut -d"." -f1,1)
+                  AWS_REGION=$(echo $DOCKER_REGISTRY | cut -d"." -f4,4)
+                  AWS_DOCKER_USER=AWS
+                  AWS_DOCKER_PASSWORD=$(aws ecr get-login --region $AWS_REGION --registry-ids $AWS_ACCOUNT | cut -d' ' -f6)
+                  kubectl delete secret --namespace {{ .Release.Namespace }} {{ .Values.imagePullSecrets }} || true
+                  kubectl create secret --namespace {{ .Release.Namespace }} \
+                      docker-registry {{ .Values.imagePullSecrets }} \
+                      --docker-server=$DOCKER_REGISTRY \
+                      --docker-username=$AWS_DOCKER_USER \
+                      --docker-password=$AWS_DOCKER_PASSWORD
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  {{- if .Values.secretConfigName }}
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.secretConfigName }}
+                      key: {{ .Values.secretConfigUsernameKey }}
+                  {{- else }}
+                  value: {{ .Values.registryUsername }}
+                  {{- end }}
+                - name: AWS_SECRET_ACCESS_KEY
+                  {{- if .Values.secretConfigName }}
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.secretConfigName }}
+                      key: {{ .Values.secretConfigPasswordKey }}
+                  {{- else }}
+                  value: {{ .Values.registryPassword }}
+                  {{- end }}
+{{- end }}
