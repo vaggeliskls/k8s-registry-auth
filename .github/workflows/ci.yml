@@ -56,7 +56,7 @@ jobs:
         env:
           OCI_IMAGE_NAME: k8s-registry-auth
         run: |
-          echo ${{ secrets.PAT }} | helm registry login ghcr.io/${{ github.actor }} -u ${{ github.actor }} --password-stdin
+          echo ${{ secrets.DOCKER_REGISTRY_PASSWORD }} | helm registry login registry-1.docker.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
           helm package ./
-          helm push ${OCI_IMAGE_NAME}-${{env.TAG_NAME}}.tgz oci://ghcr.io/${{ github.actor }}
+          helm push ${OCI_IMAGE_NAME}-${{env.TAG_NAME}}.tgz oci://registry-1.docker.io/${{ secrets.DOCKER_REGISTRY_USERNAME }}
         shell: bash
