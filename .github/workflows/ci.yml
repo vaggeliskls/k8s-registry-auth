@@ -6,7 +6,7 @@ on:
 
 env:
   TAG_NAME: ${{ github.ref_name }}
-  IMAGE_URL: docker.io/vaggeliskls/aws-kubectl
+  IMAGE_URL: docker.io/${{ github.actor }}/aws-kubectl
 
 jobs:
   aws-kubectl:
@@ -56,7 +56,7 @@ jobs:
         env:
           OCI_IMAGE_NAME: k8s-registry-auth
         run: |
-          echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" | helm registry login docker.io --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
           helm package ./
-          helm push ${OCI_IMAGE_NAME}-${{env.TAG_NAME}}.tgz oci://docker.io
+          helm push ${OCI_IMAGE_NAME}-${{env.TAG_NAME}}.tgz ghcr.io/${{ github.actor }}/${OCI_IMAGE_NAME}/${OCI_IMAGE_NAME}:${{env.TAG_NAME}}
         shell: bash
