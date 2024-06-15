@@ -56,7 +56,7 @@ jobs:
         env:
           OCI_IMAGE_NAME: k8s-registry-auth
         run: |
-          echo "${{ secrets.DOCKER_REGISTRY_USERNAME }}" | helm registry login docker.io --username ${{ secrets.DOCKER_REGISTRY_PASSWORD }} --password-stdin
+          echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" | helm registry login docker.io --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
           helm package ./
           helm push ${OCI_IMAGE_NAME}-${{env.TAG_NAME}}.tgz oci://docker.io
         shell: bash
