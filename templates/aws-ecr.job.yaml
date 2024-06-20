@@ -12,7 +12,7 @@ spec:
   template:
     spec:
       terminationGracePeriodSeconds: 600
-      serviceAccountName: {{ .Release.Name }}-service-account
+      serviceAccountName: k8s-registry-auth-service-account
       restartPolicy: OnFailure
       containers:
         - name: kubectl
@@ -66,7 +66,7 @@ spec:
       template:
         spec:
           terminationGracePeriodSeconds: 600
-          serviceAccountName: {{ .Release.Name }}-service-account
+          serviceAccountName: k8s-registry-auth-service-account
           restartPolicy: OnFailure
           containers:
             - name: kubectl
