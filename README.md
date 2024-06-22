@@ -31,7 +31,7 @@ There are two ways to set the credentials for the registry:
 
 ## Examples
 1. [AWS ECR Example (Existing Secret)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#aws-ecr-example-existing-secret)
-2. [AWS ECR Example (Existing Secret)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#aws-ecr-example-existing-secret)
+2. [AWS ECR Example (Static Credentials)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#aws-ecr-example-static-credentials)
 3. [Docker Example (Existing Secret)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#docker-example-existing-secret)
 4. [Docker Example (Static Credentials)](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#docker-example-static-credentials)
 5. [Use local values.yaml](https://github.com/vaggeliskls/k8s-registry-auth/wiki/Examples#use-local-valuesyaml)
@@ -49,7 +49,7 @@ helm upgrade --install k8s-registry-auth oci://registry-1.docker.io/vaggeliskls/
 ```
 
 Please replace 123456789123.dkr.ecr.region.amazonaws.com with your own AWS ECR registry URL.
-You can also use spesific version of this oci repository by adding: `--version 1.0.0`
+You can also use spesific version of this oci repository by adding: `--version 1.0.1`
 
 
 ## Docker Based
