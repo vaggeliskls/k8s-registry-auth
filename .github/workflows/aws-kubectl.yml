@@ -1,0 +1,41 @@
+name: AWS KUBECTL IMAGE CI
+
+on:
+  workflow_dispatch:
+
+env:
+  TAG_NAME: ${{ github.ref_name }}
+  IMAGE_URL: docker.io/${{ github.actor }}/aws-kubectl
+
+jobs:
+  aws-kubectl:
+    name: AWS KUBECTL publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Dockerhub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: 📦 Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          push: true
+          tags: |
+            ${{env.IMAGE_URL}}:latest
+          platforms: linux/amd64,linux/arm64
+          sbom: true
+          provenance: true
