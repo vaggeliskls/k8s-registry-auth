@@ -16,7 +16,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: kubectl
-          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ default .Values.image.registry .Values.global.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
           command:
             - "/bin/sh"
             - "-c"
