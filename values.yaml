@@ -1,3 +1,5 @@
+global:
+  imageRegistry: ""
 # this is the repository that we try to authenticate upon
 # Can be any aws ecr related repository or other docker based repositories
 # ex. 123456789123.dkr.ecr.eu-west-2.amazonaws.com
