@@ -10,4 +10,6 @@ RUN apk update && \
 # Install requirements
 RUN apk add --no-cache \
     kubectl \
-    aws-cli
+    aws-cli \
+    jq \
+    curl
